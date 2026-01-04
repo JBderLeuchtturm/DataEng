@@ -5,13 +5,19 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://jupyterhub.github.io/helm-chart/
+
+  sources:
+  - repoURL: https://jupyterhub.github.io/helm-chart/
     chart: jupyterhub
     targetRevision: 4.3.2
+  - repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
+    targetRevision: main
+    ref: values
+
+  source:
     helm:
       valueFiles:
-        - helm-values/jupyterlab-values.yaml
+        - $values/helm-values/jupyterlab-values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: python-ide
