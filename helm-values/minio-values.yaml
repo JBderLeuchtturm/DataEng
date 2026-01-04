@@ -1,0 +1,41 @@
+mode: standalone
+replicas: 1
+
+rootUser: "minioadmin"       # change for production
+rootPassword: "miniosecret"  # change for production
+
+image:
+  registry: quay.io
+  repository: minio/minio
+  tag: RELEASE.2023-09-30T07-02-29Z
+  pullPolicy: IfNotPresent
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: "local-path"
+  accessMode: ReadWriteOnce
+
+console:
+  enabled: true
+
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  hosts:
+    - minio.timebertt.dski23a.timebertt.dev
+  tls:
+    - hosts:
+        - minio.timebertt.dski23a.timebertt.dev
+      secretName: minio-tls
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt
+
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 250m
+  limits:
+    memory: 1Gi
+    cpu: 500m

@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
+    targetRevision: main
+    chart: postgresql
+    helm:
+      valueFiles:
+        - helm-values/postgres-values.yaml
+    path: .  # Helm chart
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: data-storage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

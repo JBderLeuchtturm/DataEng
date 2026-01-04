@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jupyterlab
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
+    targetRevision: main
+    chart: jupyterhub
+    helm:
+      valueFiles:
+        - helm-values/jupyterlab-values.yaml
+    path: .  # Helm chart
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: python-ide
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

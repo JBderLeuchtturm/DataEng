@@ -1,0 +1,19 @@
+# postgres-values.yaml
+auth:
+  username: ds_user
+  password: ds_password
+  database: ds_db
+
+primary:
+  persistence:
+    enabled: true
+    size: 10Gi
+    storageClass: local-path
+
+service:
+  type: ClusterIP
+  ports:
+    postgresql: 5432
+
+metrics:
+  enabled: false

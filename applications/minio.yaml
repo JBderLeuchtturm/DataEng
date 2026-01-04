@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
+    targetRevision: main
+    chart: minio
+    helm:
+      valueFiles:
+        - helm-values/minio-values.yaml
+    path: .  # Helm chart, path ignored
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: data-storage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
