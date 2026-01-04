@@ -5,16 +5,24 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://charts.bitnami.com/bitnami
+
+  sources:
+  - repoURL: https://charts.bitnami.com/bitnami
     chart: postgresql
     targetRevision: 15.2.0
+  - repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
+    targetRevision: main
+    ref: values
+
+  source:
     helm:
       valueFiles:
-        - helm-values/postgres-values.yaml
+        - $values/helm-values/postgres-values.yaml
+
   destination:
     server: https://kubernetes.default.svc
     namespace: data-storage
+
   syncPolicy:
     automated:
       prune: true

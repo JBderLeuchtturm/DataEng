@@ -5,16 +5,24 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://charts.bitnami.com/bitnami
+
+  sources:
+  - repoURL: https://charts.bitnami.com/bitnami
     chart: minio
-    targetRevision: 10.0.7
+    targetRevision: 15.0.0
+  - repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
+    targetRevision: main
+    ref: values
+
+  source:
     helm:
       valueFiles:
-        - helm-values/minio-values.yaml
+        - $values/helm-values/minio-values.yaml
+
   destination:
     server: https://kubernetes.default.svc
     namespace: data-storage
+
   syncPolicy:
     automated:
       prune: true
