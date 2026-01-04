@@ -6,13 +6,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
-    targetRevision: main
+    repoURL: https://jupyterhub.github.io/helm-chart/
     chart: jupyterhub
+    targetRevision: 2.3.0
     helm:
       valueFiles:
         - helm-values/jupyterlab-values.yaml
-    path: .  # Helm chart
   destination:
     server: https://kubernetes.default.svc
     namespace: python-ide

@@ -6,13 +6,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
-    targetRevision: main
+    repoURL: https://charts.bitnami.com/bitnami
     chart: postgresql
+    targetRevision: 15.2.0
     helm:
       valueFiles:
         - helm-values/postgres-values.yaml
-    path: .  # Helm chart
   destination:
     server: https://kubernetes.default.svc
     namespace: data-storage
