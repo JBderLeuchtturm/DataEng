@@ -2,8 +2,8 @@
 auth:
   existingSecret: postgres-admin
   database: ds_db
+  username: mlops
   secretKeys:
-    usernameKey: postgres-user
     userPasswordKey: postgres-password
 
 primary:
