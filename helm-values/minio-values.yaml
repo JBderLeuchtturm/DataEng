@@ -1,8 +1,9 @@
 mode: standalone
 replicas: 1
 
-rootUser: "minioadmin"       # change for production
-rootPassword: "miniosecret"  # change for production
+auth:
+  rootUser: minioadmin
+  rootPassword: miniosecret
 
 image:
   registry: quay.io
@@ -13,8 +14,9 @@ image:
 persistence:
   enabled: true
   size: 10Gi
-  storageClass: "local-path"
-  accessMode: ReadWriteOnce
+  storageClass: local-path
+  accessModes:
+    - ReadWriteOnce
 
 console:
   enabled: true
@@ -22,15 +24,14 @@ console:
 ingress:
   enabled: true
   ingressClassName: nginx
-  hosts:
-    - minio.timebertt.dski23a.timebertt.dev
-  tls:
+  hostname: minio.timebertt.dski23a.timebertt.dev
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  tls: true
+  extraTls:
     - hosts:
         - minio.timebertt.dski23a.timebertt.dev
       secretName: minio-tls
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt
 
 resources:
   requests:

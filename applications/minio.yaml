@@ -6,18 +6,13 @@ metadata:
 spec:
   project: default
 
-  sources:
-  - repoURL: https://charts.bitnami.com/bitnami
-    chart: minio
-    targetRevision: 15.0.0
+  source:
+  - repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
+    path: charts/minio
+    targetRevision: main
     helm:
       valueFiles:
-        - $values/helm-values/minio-values.yaml
-      timeout: 300
-
-  - repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
-    targetRevision: main
-    ref: values
+        - ../../helm-values/minio-values.yaml
 
   destination:
     server: https://kubernetes.default.svc
