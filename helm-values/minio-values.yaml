@@ -16,16 +16,14 @@ persistence:
   accessModes:
     - ReadWriteOnce
 
-# image:
-#   registry: docker.io
-#   repository: bitnami/minio
-#   tag: 2024.3.15-debian-12-r0
+image:
+  registry: quay.io
+  repository: minio/minio
+  tag: RELEASE.2023-09-30T07-02-29Z
+  pullPolicy: IfNotPresent
 
-# console:
-#   image:
-#     registry: docker.io
-#     repository: bitnami/minio-object-browser
-#     tag: 2.1.0-debian-12-r0
+console:
+  enabled: false
 
 ingress:
   enabled: true
