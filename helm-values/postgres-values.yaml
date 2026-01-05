@@ -4,7 +4,7 @@ auth:
   database: ds_db
   secretKeys:
     usernameKey: postgres-user
-    adminPasswordKey: postgres-password
+    userPasswordKey: postgres-password
 
 primary:
   persistence:
