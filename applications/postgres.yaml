@@ -10,15 +10,13 @@ spec:
   - repoURL: https://charts.bitnami.com/bitnami
     chart: postgresql
     targetRevision: 15.2.0
-  - repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
-    targetRevision: main
-    ref: values
-
-  source:
     helm:
       valueFiles:
         - $values/helm-values/postgres-values.yaml
       timeout: 300
+  - repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
+    targetRevision: main
+    ref: values
 
   destination:
     server: https://kubernetes.default.svc
