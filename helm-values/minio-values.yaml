@@ -5,6 +5,10 @@ auth:
   rootUser: minioadmin
   rootPassword: miniosecret
 
+global:
+  security:
+    allowInsecureImages: true
+
 image:
   registry: quay.io
   repository: minio/minio
