@@ -16,8 +16,16 @@ persistence:
   accessModes:
     - ReadWriteOnce
 
+image:
+  registry: docker.io
+  repository: bitnami/minio
+  tag: 2024.3.15-debian-12-r0
+
 console:
-  enabled: true
+  image:
+    registry: docker.io
+    repository: bitnami/minio-object-browser
+    tag: 2.1.0-debian-12-r0
 
 ingress:
   enabled: true
