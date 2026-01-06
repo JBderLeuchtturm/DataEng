@@ -36,8 +36,35 @@ singleuser:
     guarantee: 512M
     limit: 1G
 
-  extraEnvFrom:
-  - secretRef:
-      name: jupyterlab-postgres
-  - secretRef:
-      name: jupyterlab-minio
+  extraEnv:
+    # --- MinIO ---
+    MINIO_ENDPOINT: "minio.data-storage.svc.cluster.local:9005"
+
+    MINIO_ACCESS_KEY:
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: root-user
+
+    MINIO_SECRET_KEY:
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: root-password
+
+    # --- Postgres ---
+    POSTGRES_HOST: "postgres-postgresql.data-storage.svc.cluster.local"
+    POSTGRES_PORT: "5432"
+    POSTGRES_DB: "ds_db"
+
+    POSTGRES_USER:
+      valueFrom:
+        secretKeyRef:
+          name: postgres-admin
+          key: postgres-user
+
+    POSTGRES_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: postgres-admin
+          key: postgres-password
