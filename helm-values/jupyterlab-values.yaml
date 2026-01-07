@@ -1,11 +1,4 @@
 # JupyterHub Helm values for a single-user JupyterLab setup
-# This file only includes schema‑valid configuration
-
-proxy:
-  secretToken: null
-  secret:
-    name: jupyterhub-proxy-secret
-
 
 hub:
   # Use default SQLite on PVC — no storageClass or resources here
