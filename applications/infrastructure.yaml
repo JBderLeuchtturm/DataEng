@@ -8,10 +8,11 @@ spec:
   source:
     repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
     path: infrastructure
+    directory:
+      recurse: true
     targetRevision: main
   destination:
     server: https://kubernetes.default.svc
-    namespace: data-storage
   syncPolicy:
     automated:
       prune: true

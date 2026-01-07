@@ -2,8 +2,11 @@
 # This file only includes schema‑valid configuration
 
 proxy:
-  # Must be random 32‑byte hex — replace with your own if re‑using
-  secretToken: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  secretToken:
+    valueFrom:
+      secretKeyRef:
+        name: jupyterhub-proxy-secret
+        key: token
 
 hub:
   # Use default SQLite on PVC — no storageClass or resources here
@@ -27,6 +30,10 @@ singleuser:
       # Only the storageClass key here — no size under dynamic
       storageClass: local-path
 
+  singleuser:
+    extraEnv:
+      KUBERNETES_NAMESPACE: "python-ide"
+
   # CPU / memory shape
   cpu:
     guarantee: 0.5
@@ -38,7 +45,7 @@ singleuser:
 
   extraEnv:
     # --- MinIO ---
-    MINIO_ENDPOINT: "minio.data-storage.svc.cluster.local:9005"
+    MINIO_ENDPOINT: "http://minio.data-storage.svc.cluster.local:9005"
 
     MINIO_ACCESS_KEY:
       valueFrom:
