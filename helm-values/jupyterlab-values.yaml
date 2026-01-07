@@ -33,7 +33,7 @@ singleuser:
 
   extraEnv:
     # --- MinIO ---
-    MINIO_ENDPOINT: "http://minio.data-storage.svc.cluster.local:9000"
+    MINIO_ENDPOINT: "minio.data-storage.svc.cluster.local:9000"
     KUBERNETES_NAMESPACE: "python-ide"
 
     MINIO_ACCESS_KEY:
