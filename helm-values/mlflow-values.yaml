@@ -6,13 +6,15 @@ service:
   type: ClusterIP
   port: 5000
 
+# Postgres backend store
 backendStore:
-  type: postgresql
-  postgresql:
+  databaseMigration: true
+  postgres:
+    enabled: true
     host: postgres-postgresql.data-storage.svc.cluster.local
     port: 5432
     database: ds_db
-    username:
+    user:
       valueFrom:
         secretKeyRef:
           name: postgres-mlops
@@ -23,17 +25,23 @@ backendStore:
           name: postgres-mlops
           key: postgres-password
 
-artifactStore:
-  type: s3
+# S3 artifact storage (MinIO)
+artifactRoot:
   s3:
-    endpoint: http://minio.data-storage.svc.cluster.local:9000
-    accessKey:
+    enabled: true
+    bucket: mlflow-artifacts
+    awsAccessKeyId:
       valueFrom:
         secretKeyRef:
           name: minio-mlops
           key: root-user
-    secretKey:
+    awsSecretAccessKey:
       valueFrom:
         secretKeyRef:
           name: minio-mlops
           key: root-password
+
+extraEnvVars:
+  MLFLOW_S3_ENDPOINT_URL: "http://minio.data-storage.svc.cluster.local:9000"
+  AWS_DEFAULT_REGION: "us-east-1"
+
