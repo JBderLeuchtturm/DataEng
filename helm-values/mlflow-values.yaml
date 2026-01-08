@@ -72,9 +72,10 @@ server:
     # MLflow derived variables
     # ==========================
     - name: MLFLOW_BACKEND_STORE_URI
-      value: >-
-        postgresql+psycopg2://$(POSTGRES_USER):$(POSTGRES_PASSWORD)
-        @$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)
+      valueFrom:
+        secretKeyRef:
+          name: mlflow-backend-uri
+          key: uri
 
     - name: MLFLOW_ARTIFACT_ROOT
       value: s3://mlflow-artifacts
