@@ -16,26 +16,26 @@ server:
     - name: MINIO_ACCESS_KEY
       valueFrom:
         secretKeyRef:
-          name: minio
+          name: minio-mlops
           key: root-user
 
     - name: MINIO_SECRET_KEY
       valueFrom:
         secretKeyRef:
-          name: minio
+          name: minio-mlops
           key: root-password
 
     # MLflow expects AWS-style variables
     - name: AWS_ACCESS_KEY_ID
       valueFrom:
         secretKeyRef:
-          name: minio
+          name: minio-mlops
           key: root-user
 
     - name: AWS_SECRET_ACCESS_KEY
       valueFrom:
         secretKeyRef:
-          name: minio
+          name: minio-mlops
           key: root-password
 
     - name: MLFLOW_S3_ENDPOINT_URL
@@ -59,13 +59,13 @@ server:
     - name: POSTGRES_USER
       valueFrom:
         secretKeyRef:
-          name: postgres-admin
+          name: postgres-mlops
           key: postgres-user
 
     - name: POSTGRES_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: postgres-admin
+          name: postgres-mlops
           key: postgres-password
 
     # ==========================
