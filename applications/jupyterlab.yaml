@@ -27,7 +27,9 @@ spec:
       prune: true
       selfHeal: true
 
+  # Stop Argo from trying to synchronize runtime-generated fields
   ignoreDifferences:
+    # --- Hub secret (runtime-generated crypto material) ---
     - group: ""
       kind: Secret
       name: hub-secret
@@ -35,6 +37,7 @@ spec:
       jsonPointers:
         - /data
 
+    # --- Proxy secret (runtime-generated token) ---
     - group: ""
       kind: Secret
       name: proxy-secret
@@ -42,6 +45,15 @@ spec:
       jsonPointers:
         - /data
 
+    # --- Hub Deployment (checksum annotations change constantly) ---
+    - group: apps
+      kind: Deployment
+      name: hub
+      namespace: python-ide
+      jqPathExpressions:
+        - .spec.template.metadata.annotations
+
+    # --- Proxy Deployment (same reason) ---
     - group: apps
       kind: Deployment
       name: proxy
@@ -49,6 +61,7 @@ spec:
       jqPathExpressions:
         - .spec.template.metadata.annotations
 
+    # --- Proxy public service (mutable by JupyterHub) ---
     - group: ""
       kind: Service
       name: proxy-public
