@@ -1,89 +1,88 @@
-server:
-  image:
-    tag: 2.6.2
+image:
+  tag: 2.6.2
 
-  service:
-    type: ClusterIP
-    port: 5000
+service:
+  type: ClusterIP
+  port: 5000
 
-  extraEnv:
-    # ======================
-    # MinIO (artifact store)
-    # ======================
-    - name: MINIO_ENDPOINT
-      value: "minio.data-storage.svc.cluster.local:9000"
+env:
+  # ======================
+  # MinIO (artifact store)
+  # ======================
+  - name: MINIO_ENDPOINT
+    value: "minio.data-storage.svc.cluster.local:9000"
 
-    - name: MINIO_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio-mlops
-          key: root-user
+  - name: MINIO_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: minio-mlops
+        key: root-user
 
-    - name: MINIO_SECRET_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio-mlops
-          key: root-password
+  - name: MINIO_SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        name: minio-mlops
+        key: root-password
 
-    # MLflow expects AWS-style variables
-    - name: AWS_ACCESS_KEY_ID
-      valueFrom:
-        secretKeyRef:
-          name: minio-mlops
-          key: root-user
+  # MLflow expects AWS-style variables
+  - name: AWS_ACCESS_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: minio-mlops
+        key: root-user
 
-    - name: AWS_SECRET_ACCESS_KEY
-      valueFrom:
-        secretKeyRef:
-          name: minio-mlops
-          key: root-password
+  - name: AWS_SECRET_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: minio-mlops
+        key: root-password
 
-    - name: MLFLOW_S3_ENDPOINT_URL
-      value: "http://minio.data-storage.svc.cluster.local:9000"
+  - name: MLFLOW_S3_ENDPOINT_URL
+    value: "http://minio.data-storage.svc.cluster.local:9000"
 
-    - name: AWS_DEFAULT_REGION
-      value: us-east-1
+  - name: AWS_DEFAULT_REGION
+    value: us-east-1
 
-    # ==========================
-    # Postgres (backend store)
-    # ==========================
-    - name: POSTGRES_HOST
-      value: "postgres-postgresql.data-storage.svc.cluster.local"
+  # ==========================
+  # Postgres (backend store)
+  # ==========================
+  - name: POSTGRES_HOST
+    value: "postgres-postgresql.data-storage.svc.cluster.local"
 
-    - name: POSTGRES_PORT
-      value: "5432"
+  - name: POSTGRES_PORT
+    value: "5432"
 
-    - name: POSTGRES_DB
-      value: "ds_db"
+  - name: POSTGRES_DB
+    value: "ds_db"
 
-    - name: POSTGRES_USER
-      valueFrom:
-        secretKeyRef:
-          name: postgres-mlops
-          key: postgres-user
+  - name: POSTGRES_USER
+    valueFrom:
+      secretKeyRef:
+        name: postgres-mlops
+        key: postgres-user
 
-    - name: POSTGRES_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: postgres-mlops
-          key: postgres-password
+  - name: POSTGRES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: postgres-mlops
+        key: postgres-password
 
-    # ==========================
-    # MLflow derived variables
-    # ==========================
-    - name: MLFLOW_BACKEND_STORE_URI
-      valueFrom:
-        secretKeyRef:
-          name: mlflow-backend-uri
-          key: uri
+  # ==========================
+  # MLflow derived variables
+  # ==========================
+  - name: MLFLOW_BACKEND_STORE_URI
+    valueFrom:
+      secretKeyRef:
+        name: mlflow-backend-uri
+        key: uri
 
-    - name: MLFLOW_ARTIFACT_ROOT
-      value: s3://mlflow-artifacts
+  - name: MLFLOW_ARTIFACT_ROOT
+    value: s3://mlflow-artifacts
 
-  command:
-    - mlflow
-    - server
-    - --host=0.0.0.0
-    - --port=5000
-    - --backend-store-uri=$(MLFLOW_BACKEND_STORE_URI)
-    - --default-artifact-root=$(MLFLOW_ARTIFACT_ROOT)
+command:
+  - mlflow
+  - server
+  - --host=0.0.0.0
+  - --port=5000
+  - --backend-store-uri=$(MLFLOW_BACKEND_STORE_URI)
+  - --default-artifact-root=$(MLFLOW_ARTIFACT_ROOT)
