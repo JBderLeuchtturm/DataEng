@@ -1,47 +1,72 @@
-image:
-  repository: mlflow/mlflow
-  tag: 2.6.2
-
-service:
-  type: ClusterIP
-  port: 5000
-
-# Postgres backend store
+# 1) PostgreSQL backend store
 backendStore:
   databaseMigration: true
   postgres:
     enabled: true
-    host: postgres-postgresql.data-storage.svc.cluster.local
+    host: "postgres-postgresql.data-storage.svc.cluster.local"
     port: 5432
-    database: ds_db
-    user:
-      valueFrom:
-        secretKeyRef:
-          name: postgres-mlops
-          key: postgres-user
-    password:
-      valueFrom:
-        secretKeyRef:
-          name: postgres-mlops
-          key: postgres-password
+    database: "ds_db"
+    # Must be literal strings: supply via extraEnvVars
+    user: ""
+    password: ""
 
-# S3 artifact storage (MinIO)
+# 2) S3 / MinIO artifact store
 artifactRoot:
   s3:
     enabled: true
-    bucket: mlflow-artifacts
-    awsAccessKeyId:
-      valueFrom:
-        secretKeyRef:
-          name: minio-mlops
-          key: root-user
-    awsSecretAccessKey:
-      valueFrom:
-        secretKeyRef:
-          name: minio-mlops
-          key: root-password
+    bucket: "mlflow-artifacts"
+    # Must be literal strings here too
+    awsAccessKeyId: ""
+    awsSecretAccessKey: ""
 
+# 3) Service type and port
+service:
+  type: ClusterIP
+  port: 5000
+
+# 4) Additional environment variables passed into the MLflow container
 extraEnvVars:
-  MLFLOW_S3_ENDPOINT_URL: "http://minio.data-storage.svc.cluster.local:9000"
-  AWS_DEFAULT_REGION: "us-east-1"
+  # Database credentials from Kubernetes secrets
+  - name: POSTGRES_USER
+    valueFrom:
+      secretKeyRef:
+        name: postgres-admin
+        key: postgres-user
+  - name: POSTGRES_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: postgres-admin
+        key: postgres-password
+
+  # Build MLflow backend URI dynamically from above
+  - name: MLFLOW_BACKEND_STORE_URI
+    value: >-
+      postgresql+psycopg2://$(POSTGRES_USER):$(POSTGRES_PASSWORD)
+      @postgres-postgresql.data-storage.svc.cluster.local:5432/ds_db
+
+  # MinIO credentials from Kubernetes secret
+  - name: AWS_ACCESS_KEY_ID
+    valueFrom:
+      secretKeyRef:
+        name: minio
+        key: root-user
+  - name: AWS_SECRET_ACCESS_KEY
+    valueFrom:
+      secretKeyRef:
+        name: minio
+        key: root-password
+
+  # MinIO endpoint configuration
+  - name: MLFLOW_S3_ENDPOINT_URL
+    value: "http://minio.data-storage.svc.cluster.local:9000"
+  - name: AWS_DEFAULT_REGION
+    value: "us-east-1"
+
+  # Where MLflow stores artifacts
+  - name: MLFLOW_ARTIFACT_ROOT
+    value: "s3://mlflow-artifacts"
+
+# Optionally enable ingress here (if desired)
+ingress:
+  enabled: false
 
