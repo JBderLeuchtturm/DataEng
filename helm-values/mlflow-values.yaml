@@ -1,21 +1,88 @@
 server:
   image:
-    tag: 2.6.2  # or latest stable
-  env:
-    - name: MLFLOW_TRACKING_URI
-      value: postgresql+psycopg2://mlflow_user:mlflow_pass@postgres.mlops.svc.cluster.local:5432/mlflow_db
-    - name: ARTIFACT_ROOT
-      value: s3://mlflow-artifacts/
-  extraVolumes:
-    - name: minio-credentials
-      secret:
-        secretName: minio-credentials
-  extraVolumeMounts:
-    - name: minio-credentials
-      mountPath: /etc/minio
+    tag: 2.6.2
 
-artifactStore:
-  s3:
-    endpointUrl: http://minio.mlops.svc.cluster.local:9000
-    accessKey: minio-access-key
-    secretKey: minio-secret-key
+  service:
+    type: ClusterIP
+    port: 5000
+
+  extraEnv:
+    # ======================
+    # MinIO (artifact store)
+    # ======================
+    - name: MINIO_ENDPOINT
+      value: "minio.data-storage.svc.cluster.local:9000"
+
+    - name: MINIO_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: root-user
+
+    - name: MINIO_SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: root-password
+
+    # MLflow expects AWS-style variables
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: root-user
+
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: minio
+          key: root-password
+
+    - name: MLFLOW_S3_ENDPOINT_URL
+      value: "http://minio.data-storage.svc.cluster.local:9000"
+
+    - name: AWS_DEFAULT_REGION
+      value: us-east-1
+
+    # ==========================
+    # Postgres (backend store)
+    # ==========================
+    - name: POSTGRES_HOST
+      value: "postgres-postgresql.data-storage.svc.cluster.local"
+
+    - name: POSTGRES_PORT
+      value: "5432"
+
+    - name: POSTGRES_DB
+      value: "ds_db"
+
+    - name: POSTGRES_USER
+      valueFrom:
+        secretKeyRef:
+          name: postgres-admin
+          key: postgres-user
+
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: postgres-admin
+          key: postgres-password
+
+    # ==========================
+    # MLflow derived variables
+    # ==========================
+    - name: MLFLOW_BACKEND_STORE_URI
+      value: >-
+        postgresql+psycopg2://$(POSTGRES_USER):$(POSTGRES_PASSWORD)
+        @$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)
+
+    - name: MLFLOW_ARTIFACT_ROOT
+      value: s3://mlflow-artifacts
+
+  command:
+    - mlflow
+    - server
+    - --host=0.0.0.0
+    - --port=5000
+    - --backend-store-uri=$(MLFLOW_BACKEND_STORE_URI)
+    - --default-artifact-root=$(MLFLOW_ARTIFACT_ROOT)
