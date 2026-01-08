@@ -10,6 +10,11 @@ hub:
     DummyAuthenticator:
       password: ""
 
+# change to NodePort, if not using ingress or port-forwarding
+proxy:
+  service:
+    type: ClusterIP
+
 singleuser:
   image:
     name: jupyter/base-notebook
