@@ -5,15 +5,15 @@ backendStore:
     host: "postgres-postgresql.data-storage.svc.cluster.local"
     port: 5432
     database: "ds_db"
-    user: ""
-    password: ""
+    user: "temp"
+    password: "temp"
 
 artifactRoot:
   s3:
     enabled: true
     bucket: "mlflow-artifacts"
-    awsAccessKeyId: ""
-    awsSecretAccessKey: ""
+    awsAccessKeyId: "temp"
+    awsSecretAccessKey: "temp"
 
 service:
   type: ClusterIP
