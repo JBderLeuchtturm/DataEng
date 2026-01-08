@@ -6,13 +6,17 @@ metadata:
 spec:
   project: default
 
-  source:
-    repoURL: https://community-charts.github.io/helm-charts
+  sources:
+  - repoURL: https://community-charts.github.io/helm-charts
     chart: mlflow
     targetRevision: 1.8.1   # example – pin a version
     helm:
       valueFiles:
-        - helm-values/mlflow-values.yaml
+        - $values/helm-values/mlflow-values.yaml
+      timeout: 300
+  - repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
+    targetRevision: main
+    ref: values
 
   destination:
     server: https://kubernetes.default.svc
