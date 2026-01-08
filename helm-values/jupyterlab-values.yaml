@@ -44,13 +44,13 @@ singleuser:
     MINIO_ACCESS_KEY:
       valueFrom:
         secretKeyRef:
-          name: minio-jupyter
+          name: minio
           key: root-user
 
     MINIO_SECRET_KEY:
       valueFrom:
         secretKeyRef:
-          name: minio-jupyter
+          name: minio
           key: root-password
 
     # --- Postgres ---
@@ -61,11 +61,11 @@ singleuser:
     POSTGRES_USER:
       valueFrom:
         secretKeyRef:
-          name: postgres-jupyter
+          name: postgres
           key: postgres-user
 
     POSTGRES_PASSWORD:
       valueFrom:
         secretKeyRef:
-          name: postgres-jupyter
+          name: postgres
           key: postgres-password
