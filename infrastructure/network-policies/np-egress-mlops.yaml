@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: allow-egress-to-data-storage
+  name: allow-egress-to-data-storage-mlops
   namespace: mlops
 spec:
   podSelector:
