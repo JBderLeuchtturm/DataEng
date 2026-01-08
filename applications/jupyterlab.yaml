@@ -21,7 +21,37 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: python-ide
+
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+
+  ignoreDifferences:
+    - group: ""
+      kind: Secret
+      name: hub-secret
+      namespace: python-ide
+      jsonPointers:
+        - /data
+
+    - group: ""
+      kind: Secret
+      name: proxy-secret
+      namespace: python-ide
+      jsonPointers:
+        - /data
+
+    - group: apps
+      kind: Deployment
+      name: proxy
+      namespace: python-ide
+      jqPathExpressions:
+        - .spec.template.metadata.annotations
+
+    - group: ""
+      kind: Service
+      name: proxy-public
+      namespace: python-ide
+      jqPathExpressions:
+        - .spec.ports
