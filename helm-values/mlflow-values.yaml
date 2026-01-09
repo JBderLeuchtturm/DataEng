@@ -16,13 +16,12 @@ backendStore:
   databaseConnectionCheck: true
 
   postgres:
-    enabled: false             # we use your external Postgres
+    enabled: true             # we use your external Postgres
     host: "postgres-postgresql.data-storage.svc.cluster.local"
     port: 5432
     database: "ds_db"
     user: "mlops"
     password: "WP+t3T^)iGv#*Z|m/4C(qc=-<s1nXxf"
-    sslmode: require           # optional: enforce TLS
 
 # --------------------------
 # Artifact Store (S3/MinIO)
@@ -33,8 +32,6 @@ artifactRoot:
     bucket: "hello-world-bucket"       # existing bucket in MinIO
     awsAccessKeyId: "minioadmin"
     awsSecretAccessKey: "W4?ZL}52vd!1\\XTE#O6ym|i`VzR*[,."
-    region: ""                      # leave blank for S3‑compatible
-    path: ""
 
 extraEnvVars:
   MLFLOW_S3_ENDPOINT_URL: "http://minio.data-storage.svc.cluster.local:9000"
@@ -72,15 +69,3 @@ resources:
   requests:
     cpu: "250m"
     memory: "512Mi"
-
-autoscaling:
-  enabled: true
-  minReplicas: 2
-  maxReplicas: 4
-  targetCPUUtilizationPercentage: 60
-
-# --------------------------
-# Monitoring (optional)
-# --------------------------
-metrics:
-  enabled: true
