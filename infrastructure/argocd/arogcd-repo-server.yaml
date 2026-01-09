@@ -8,7 +8,7 @@ spec:
     spec:
       initContainers:
         - name: install-avp
-          image: ghcr.io/argoproj-labs/argocd-vault-plugin:v1.18.0
+          image: quay.io/argoproj/argocd-vault-plugin:v1.18.0
           command: ["sh", "-c"]
           args:
             - cp /usr/local/bin/argocd-vault-plugin /custom-tools/argocd-vault-plugin

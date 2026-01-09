@@ -20,7 +20,6 @@ artifactRoot:
     awsAccessKeyId: "{{ vault:mlops/minio#root-user }}"
     awsSecretAccessKey: "{{ vault:mlops/minio#root-password }}"
     endpoint: "http://minio.data-storage.svc.cluster.local:9000"
-    usePathStyle: true
 
 service:
   type: ClusterIP
