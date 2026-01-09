@@ -1,16 +1,3 @@
-# --------------------------
-# MLflow Core Config
-# --------------------------
-image:
-  repository: "communitycharts/mlflow"
-  tag: "latest"                # chart version 1.8+ corresponds to mlflow 3.x
-  pullPolicy: IfNotPresent
-
-replicaCount: 2                # high availability
-
-# --------------------------
-# Backend (Postgres)
-# --------------------------
 backendStore:
   databaseMigration: true      # auto run migration on startup
   databaseConnectionCheck: true
@@ -23,9 +10,6 @@ backendStore:
     user: "mlops"
     password: "WP+t3T^)iGv#*Z|m/4C(qc=-<s1nXxf"
 
-# --------------------------
-# Artifact Store (S3/MinIO)
-# --------------------------
 artifactRoot:
   s3:
     enabled: true
@@ -37,9 +21,6 @@ extraEnvVars:
   MLFLOW_S3_ENDPOINT_URL: "http://minio.data-storage.svc.cluster.local:9000"
   MLFLOW_S3_IGNORE_TLS: "true"                 # if no TLS (else false)
 
-# --------------------------
-# Service & Ingress
-# --------------------------
 service:
   type: ClusterIP
   port: 5000
@@ -59,9 +40,6 @@ service:
 #         - "mlflow.yourdomain.com"
 #       secretName: mlflow‑tls
 
-# --------------------------
-# Resources and Pod Autoscaling
-# --------------------------
 resources:
   limits:
     cpu: "500m"
