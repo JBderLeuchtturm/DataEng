@@ -37,21 +37,22 @@ singleuser:
     limit: 1G
 
   extraEnv:
-    # --- MinIO ---
-    MINIO_ENDPOINT: "minio.data-storage.svc.cluster.local:9000"
-    KUBERNETES_NAMESPACE: "python-ide"
-
-    MINIO_ACCESS_KEY:
+  # --- MLflow / S3 (MinIO) ---
+    AWS_ACCESS_KEY_ID:
       valueFrom:
         secretKeyRef:
           name: minio
           key: root-user
 
-    MINIO_SECRET_KEY:
+    AWS_SECRET_ACCESS_KEY:
       valueFrom:
         secretKeyRef:
           name: minio
           key: root-password
+
+    MLFLOW_S3_ENDPOINT_URL: "http://minio.data-storage.svc.cluster.local:9000"
+
+    AWS_DEFAULT_REGION: "us-east-1"
 
     # --- Postgres ---
     POSTGRES_HOST: "postgres-postgresql.data-storage.svc.cluster.local"
