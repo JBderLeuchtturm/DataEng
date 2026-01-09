@@ -1,37 +1,86 @@
+# --------------------------
+# MLflow Core Config
+# --------------------------
 image:
-  repository: "ghcr.io/mlflow/mlflow"
-  tag: "3.8.0"
+  repository: "communitycharts/mlflow"
+  tag: "latest"                # chart version 1.8+ corresponds to mlflow 3.x
   pullPolicy: IfNotPresent
 
+replicaCount: 2                # high availability
+
+# --------------------------
+# Backend (Postgres)
+# --------------------------
 backendStore:
-  databaseMigration: true
+  databaseMigration: true      # auto run migration on startup
+  databaseConnectionCheck: true
+
   postgres:
-    enabled: true
+    enabled: false             # we use your external Postgres
     host: "postgres-postgresql.data-storage.svc.cluster.local"
     port: 5432
     database: "ds_db"
     user: "mlops"
     password: "WP+t3T^)iGv#*Z|m/4C(qc=-<s1nXxf"
+    sslmode: require           # optional: enforce TLS
 
+# --------------------------
+# Artifact Store (S3/MinIO)
+# --------------------------
 artifactRoot:
   s3:
     enabled: true
-    bucket: "hello-world-bucket"
+    bucket: "hello-world-bucket"       # existing bucket in MinIO
     awsAccessKeyId: "minioadmin"
     awsSecretAccessKey: "W4?ZL}52vd!1\\XTE#O6ym|i`VzR*[,."
+    region: ""                      # leave blank for S3‑compatible
+    path: ""
 
 extraEnvVars:
   MLFLOW_S3_ENDPOINT_URL: "http://minio.data-storage.svc.cluster.local:9000"
-  MLFLOW_S3_IGNORE_TLS: "true"
+  MLFLOW_S3_IGNORE_TLS: "true"                 # if no TLS (else false)
 
+# --------------------------
+# Service & Ingress
+# --------------------------
 service:
   type: ClusterIP
   port: 5000
 
 # ingress:
 #   enabled: true
+#   annotations:
+#     kubernetes.io/ingress.class: "nginx"
+#     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 #   hosts:
-#     - host: mlflow.example.com
+#     - host: "mlflow.yourdomain.com"
 #       paths:
-#       - path: /
-#         pathType: Prefix
+#         - path: /
+#           pathType: ImplementationSpecific
+#   tls:
+#     - hosts:
+#         - "mlflow.yourdomain.com"
+#       secretName: mlflow‑tls
+
+# --------------------------
+# Resources and Pod Autoscaling
+# --------------------------
+resources:
+  limits:
+    cpu: "500m"
+    memory: "1Gi"
+  requests:
+    cpu: "250m"
+    memory: "512Mi"
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 60
+
+# --------------------------
+# Monitoring (optional)
+# --------------------------
+metrics:
+  enabled: true
