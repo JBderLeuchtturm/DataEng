@@ -17,6 +17,10 @@ artifactRoot:
     awsAccessKeyId: "minioadmin"
     awsSecretAccessKey: "W4?ZL}52vd!1\\XTE#O6ym|i`VzR*[,."
 
+extraFlags:
+  - allowedHosts=mlflow.mlops.svc.cluster.local
+
+
 extraEnvVars:
   MLFLOW_S3_ENDPOINT_URL: "http://minio.data-storage.svc.cluster.local:9000"
   MLFLOW_S3_IGNORE_TLS: "true"                 # if no TLS (else false)
