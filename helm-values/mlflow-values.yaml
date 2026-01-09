@@ -21,7 +21,7 @@ artifactRoot:
 extraEnvVars:
   MLFLOW_S3_ENDPOINT_URL: "http://minio.data-storage.svc.cluster.local:9000"
   MLFLOW_S3_IGNORE_TLS: "true"   
-  MLFLOW_SERVER_ALLOWED_HOSTS: "mlflow.mlops.svc.cluster.local"
+  MLFLOW_SERVER_ALLOWED_HOSTS: "mlflow.mlops.svc.cluster.local,mlflow,localhost,127.0.0.1"
 
 service:
   type: ClusterIP
