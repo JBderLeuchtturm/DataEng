@@ -61,11 +61,11 @@ singleuser:
     POSTGRES_USER:
       valueFrom:
         secretKeyRef:
-          name: postgres
+          name: postgres-admin
           key: postgres-user
 
     POSTGRES_PASSWORD:
       valueFrom:
         secretKeyRef:
-          name: postgres
+          name: postgres-admin
           key: postgres-password
