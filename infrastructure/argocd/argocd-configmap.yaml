@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+data:
+  configManagementPlugins: |
+    - name: argocd-vault
+      generate:
+        command: ["sh", "-c"]
+        args:
+          - >
+            argocd-vault-plugin generate . \
+              --secret-name avp-credentials \
+              --verbose

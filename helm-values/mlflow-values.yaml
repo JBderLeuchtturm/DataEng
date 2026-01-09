@@ -1,35 +1,35 @@
+image:
+  repository: "ghcr.io/mlflow/mlflow"
+  tag: "3.8.0"
+  pullPolicy: IfNotPresent
+
 backendStore:
   databaseMigration: true
   postgres:
     enabled: true
-    host: "postgres-postgresql.data-storage.svc.cluster.local"
+    host: "{{ vault:mlops/mlflow-backend-host#host }}"
     port: 5432
     database: "ds_db"
-    user: "temp"
-    password: "temp"
+    user: "{{ vault:mlops/postgres-admin#postgres-user }}"
+    password: "{{ vault:mlops/postgres-admin#postgres-password }}"
 
 artifactRoot:
   s3:
     enabled: true
-    bucket: "mlflow-artifacts"
-    awsAccessKeyId: "temp"
-    awsSecretAccessKey: "temp"
+    bucket: "hello-world-bucket"
+    awsAccessKeyId: "{{ vault:mlops/minio#root-user }}"
+    awsSecretAccessKey: "{{ vault:mlops/minio#root-password }}"
+    endpoint: "http://minio.data-storage.svc.cluster.local:9000"
+    usePathStyle: true
 
 service:
   type: ClusterIP
   port: 5000
 
-extraEnvVars:
-  MLFLOW_BACKEND_STORE_URI: >
-    postgresql+psycopg2://$(POSTGRES_USER):$(POSTGRES_PASSWORD)
-    @postgres-postgresql.data-storage.svc.cluster.local:5432/ds_db
-  MLFLOW_S3_ENDPOINT_URL: "http://minio.data-storage.svc.cluster.local:9000"
-  AWS_DEFAULT_REGION: "us-east-1"
-  MLFLOW_ARTIFACT_ROOT: "s3://mlflow-artifacts"
-  POSTGRES_USER: ""
-  POSTGRES_PASSWORD: ""
-  AWS_ACCESS_KEY_ID: ""
-  AWS_SECRET_ACCESS_KEY: ""
-
-ingress:
-  enabled: false
+# ingress:
+#   enabled: true
+#   hosts:
+#     - host: mlflow.example.com
+#       paths:
+#       - path: /
+#         pathType: Prefix
