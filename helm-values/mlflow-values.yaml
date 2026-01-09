@@ -7,18 +7,18 @@ backendStore:
   databaseMigration: true
   postgres:
     enabled: true
-    host: "{{ vault:mlops/mlflow-backend-host#host }}"
+    host: "postgres-postgresql.data-storage.svc.cluster.local"
     port: 5432
     database: "ds_db"
-    user: "{{ vault:mlops/postgres-admin#postgres-user }}"
-    password: "{{ vault:mlops/postgres-admin#postgres-password }}"
+    user: "mlops"
+    password: "WP+t3T^)iGv#*Z|m/4C(qc=-<s1nXxf"
 
 artifactRoot:
   s3:
     enabled: true
     bucket: "hello-world-bucket"
-    awsAccessKeyId: "{{ vault:mlops/minio#root-user }}"
-    awsSecretAccessKey: "{{ vault:mlops/minio#root-password }}"
+    awsAccessKeyId: "minioadmin"
+    awsSecretAccessKey: "W4?ZL}52vd!1\\XTE#O6ym|i`VzR*[,."
 
 extraEnvVars:
   MLFLOW_S3_ENDPOINT_URL: "http://minio.data-storage.svc.cluster.local:9000"

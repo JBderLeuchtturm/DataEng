@@ -13,8 +13,6 @@ spec:
     helm:
       valueFiles:
         - $values/helm-values/mlflow-values.yaml
-      plugin:
-        name: argocd-vault
       timeout: 300
   - repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
     targetRevision: main
