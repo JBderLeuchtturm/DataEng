@@ -18,7 +18,7 @@ artifactRoot:
     awsSecretAccessKey: "W4?ZL}52vd!1\\XTE#O6ym|i`VzR*[,."
 
 extraFlags:
-  - allowedHosts=mlflow.mlops.svc.cluster.local
+  - allowed-hosts=mlflow.mlops.svc.cluster.local
 
 
 extraEnvVars:
