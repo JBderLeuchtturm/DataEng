@@ -27,11 +27,11 @@ server:
   # extraArgs:
   #   - --auth-mode=client
 
-  # extraEnv:
-  #   - name: ARGO_SERVER_AUTH_MODE
-  #     value: "kubernetes"
+  extraEnv:
+    - name: ARGO_SERVER_AUTH_MODE
+      value: "client"
 
-  authMode: client
+  # authMode: client
 
 # -----------------------------
 # Artifact Repository (MinIO)
