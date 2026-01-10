@@ -26,6 +26,7 @@ server:
 
   extraArgs:
     - --auth-mode=client
+    - --secure=false
 
   # extraEnv:
   #   - name: ARGO_SERVER_AUTH_MODE
