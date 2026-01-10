@@ -1,0 +1,65 @@
+# -----------------------------
+# Core controller configuration
+# -----------------------------
+controller:
+  replicas: 1
+
+  workflowNamespaces:
+    - argo-workflows
+
+  metricsConfig:
+    enabled: true
+
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+
+# -----------------------------
+# Server (UI + API)
+# -----------------------------
+server:
+  enabled: true
+
+  service:
+    type: ClusterIP
+    port: 2746
+
+  extraEnv:
+    - name: ARGO_SERVER_AUTH_MODE
+      value: "server"
+
+# -----------------------------
+# Artifact Repository (MinIO)
+# -----------------------------
+artifactRepository:
+  s3:
+    endpoint: minio.data-storage.svc.cluster.local:9000
+    bucket: argo-artifacts
+    insecure: true
+    accessKeySecret:
+      name: minio
+      key: root-user
+    secretKeySecret:
+      name: minio
+      key: root-password
+
+# -----------------------------
+# Workflow defaults
+# -----------------------------
+workflow:
+  serviceAccount:
+    create: true
+    name: argo-workflow
+
+# -----------------------------
+# RBAC
+# -----------------------------
+rbac:
+  create: true
+
+# -----------------------------
+# Pod garbage collection
+# -----------------------------
+podGC:
+  enabled: true
+  strategy: OnWorkflowCompletion
