@@ -24,8 +24,8 @@ server:
     type: ClusterIP
     port: 2746
 
-  # extraArgs:
-  #   - --auth-mode=client
+  extraArgs:
+    - --auth-mode=client
 
   # extraEnv:
   #   - name: ARGO_SERVER_AUTH_MODE
