@@ -24,11 +24,14 @@ server:
     type: ClusterIP
     port: 2746
 
-  extraEnv:
-    - name: ARGO_SERVER_AUTH_MODE
-      value: "kubernetes"
+  extraArgs:
+    - auth-mode=client
 
-  # authMode: kubernetes
+  # extraEnv:
+  #   - name: ARGO_SERVER_AUTH_MODE
+  #     value: "kubernetes"
+
+  # authMode: client
 
 # -----------------------------
 # Artifact Repository (MinIO)
