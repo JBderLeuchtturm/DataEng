@@ -28,6 +28,9 @@ server:
     - name: ARGO_SERVER_AUTH_MODE
       value: "server"
 
+  authModes:
+    - kubernetes
+
 # -----------------------------
 # Artifact Repository (MinIO)
 # -----------------------------
