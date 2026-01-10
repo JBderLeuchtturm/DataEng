@@ -18,15 +18,13 @@ controller:
 # Server (UI + API)
 # -----------------------------
 server:
+  authMode: server
+  secure: false
   enabled: true
 
   service:
     type: ClusterIP
     port: 2746
-
-  extraArgs:
-    - --auth-mode=client
-    - --secure=false
 
   # extraEnv:
   #   - name: ARGO_SERVER_AUTH_MODE
