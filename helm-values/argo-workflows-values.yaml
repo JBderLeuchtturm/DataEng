@@ -25,7 +25,7 @@ server:
     port: 2746
 
   extraArgs:
-    - auth-mode=client
+    - --auth-mode=client
 
   # extraEnv:
   #   - name: ARGO_SERVER_AUTH_MODE
