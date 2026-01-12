@@ -40,10 +40,6 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
   tls: true
-  extraTls:
-    - hosts:
-        - minio.timebertt.dski23a.timebertt.dev
-      secretName: minio-tls
 
 resources:
   requests:
