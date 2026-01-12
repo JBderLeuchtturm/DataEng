@@ -80,8 +80,6 @@ ingress:
   ingressClassName: nginx
   hosts: 
     - jupyterlab.timebertt.dski23a.timebertt.dev
-  pathSuffix: /
-  pathType: Prefix
   tls: 
     - hosts:
         - jupyterlab.timebertt.dski23a.timebertt.dev
