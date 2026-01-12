@@ -36,6 +36,8 @@ singleuser:
     guarantee: 512M
     limit: 1G
 
+    
+
   extraEnv:
   # --- MLflow / S3 (MinIO) ---
     AWS_ACCESS_KEY_ID:
@@ -70,3 +72,19 @@ singleuser:
         secretKeyRef:
           name: postgres-admin
           key: postgres-password
+
+ingress:
+  enabled: true
+  annotations: 
+    cert-manager.io/cluster-issuer: letsencrypt
+  ingressClassName: nginx
+  hosts: 
+    - jupyterlab.timebertt.dski23a.timebertt.dev
+  pathSuffix: /
+  pathType: Prefix
+  tls: 
+    - hosts:
+        - jupyterlab.timebertt.dski23a.timebertt.dev
+      secretName: jupyterlab-tls
+
+  
