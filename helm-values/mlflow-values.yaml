@@ -3,9 +3,7 @@ auth:
   postgres:
     enabled: true
     existingSecret:
-      name: "postgres-admin"
-      userKey: "postgres-user"
-      passwordKey: "postgres-password"
+      name: "postgres-admin-2"
 
 
 backendStore:
