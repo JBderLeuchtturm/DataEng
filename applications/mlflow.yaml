@@ -6,17 +6,13 @@ metadata:
 spec:
   project: default
 
-  sources:
-  - repoURL: https://github.com/Pharia/helm-charts
-    chart: mlflow
+  source:
+    repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops
     targetRevision: main
+    path: charts/mlflow
     helm:
       valueFiles:
-        - $values/helm-values/mlflow-values.yaml
-      timeout: 300
-  - repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
-    targetRevision: main
-    ref: values
+        - ../../helm-values/mlflow-values.yaml
 
   destination:
     server: "https://kubernetes.default.svc"
