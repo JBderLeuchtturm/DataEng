@@ -32,6 +32,7 @@ args:
   - server
   - /bitnami/minio/data
   - "--address=:9000"
+  - "--console-address=:9090"
 
 ingress:
   minio:
