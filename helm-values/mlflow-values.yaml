@@ -1,3 +1,13 @@
+auth:
+  enabled: true
+  postgres:
+    enabled: true
+    existingSecret:
+      name: "postgres-admin"
+      userKey: "postgres-user"
+      passwordKey: "postgres-password"
+
+
 backendStore:
   databaseMigration: true      # auto run migration on startup
   databaseConnectionCheck: true
@@ -7,8 +17,6 @@ backendStore:
     host: "postgres-postgresql.data-storage.svc.cluster.local"
     port: 5432
     database: "ds_db"
-    user: "test"
-    password: "test"
 
 artifactRoot:
   s3:
