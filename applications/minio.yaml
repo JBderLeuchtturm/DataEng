@@ -6,17 +6,13 @@ metadata:
 spec:
   project: default
 
-  sources:
-    - chart: minio
-      repoURL: https://solidcharts.github.io/helm-charts
-      targetRevision: 0.5.0
-      helm:
-        valueFiles:
-          - $values/helm-values/minio-values.yaml
-
-    - repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
-      targetRevision: main
-      ref: values
+  source:
+    repoURL: https://github.com/Marius2311/wdski23a-mlops-gitops.git
+    path: charts/minio
+    targetRevision: main
+    helm:
+      valueFiles:
+        - ../../helm-values/minio-values.yaml
 
   destination:
     server: https://kubernetes.default.svc
