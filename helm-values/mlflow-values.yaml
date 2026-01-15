@@ -2,6 +2,7 @@ auth:
   enabled: true
   postgres:
     enabled: true
+    host: "postgres-postgresql.data-storage.svc.cluster.local"
     existingSecret:
       name: "postgres-admin-2"
 
