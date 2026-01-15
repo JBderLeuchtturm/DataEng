@@ -1,11 +1,14 @@
 mode: standalone
 replicas: 1
 
+# auth:
+#   rootUser: minioadmin
+#   rootPassword: minioadminpassword
 auth:
   existingSecret: minio
   rootUserSecretKey: root-user
   rootPasswordSecretKey: root-password
-
+  
 global:
   security:
     allowInsecureImages: true
@@ -30,16 +33,36 @@ args:
   - /bitnami/minio/data
   - "--address=:9000"
 
-console:
-  enabled: false
-
 ingress:
-  enabled: true
-  ingressClassName: nginx
-  hostname: minio.timebertt.dski23a.timebertt.dev
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-  tls: true
+  minio:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - host: minio.timebertt.dski23a.timebertt.dev
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    tls:
+      - secretName: minio-tls-secret
+        hosts:
+          - minio.timebertt.dski23a.timebertt.dev
+
+  console:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - host: minio-ui.timebertt.dski23a.timebertt.dev
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    tls:
+      - secretName: minio-console-tls-secret
+        hosts:
+          - minio-ui.timebertt.dski23a.timebertt.dev
 
 resources:
   requests:
