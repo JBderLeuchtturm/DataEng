@@ -7,9 +7,9 @@ spec:
   project: default
 
   sources:
-  - repoURL: https://community-charts.github.io/helm-charts
+  - repoURL: https://github.com/Pharia/helm-charts
     chart: mlflow
-    targetRevision: 1.8.1   # example – pin a version
+    targetRevision: main
     helm:
       valueFiles:
         - $values/helm-values/mlflow-values.yaml
