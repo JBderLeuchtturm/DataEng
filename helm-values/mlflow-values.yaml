@@ -1,12 +1,12 @@
 auth:
   enabled: true
+  adminUsername: "placeholder"
+  adminPassword: "placeholder"
   postgres:
     enabled: true
     host: "postgres-postgresql.data-storage.svc.cluster.local"
     port: 5432
     database: "ds_db"
-    adminUsername: "placeholder"
-    adminPassword: "placeholder"
     existingSecret:
       name: "postgres-admin-2"
 
