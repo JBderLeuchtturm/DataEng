@@ -270,13 +270,13 @@ spec:
             - name: ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ default (printf "%s-auth-admin-secret" (include "mlflow.fullname" .)) .Values.auth.existingAdminSecret.name }}
-                  key: {{ ternary "username" .Values.auth.existingAdminSecret.usernameKey (eq .Values.auth.existingAdminSecret.name "") }}
+                  name: postgres-admin
+                  key: postgres-user
             - name: ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ default (printf "%s-auth-admin-secret" (include "mlflow.fullname" .)) .Values.auth.existingAdminSecret.name }}
-                  key: {{ ternary "password" .Values.auth.existingAdminSecret.passwordKey (eq .Values.auth.existingAdminSecret.name "") }}
+                  name: postgres-admin
+                  key: postgres-password
           volumeMounts:
             - name: auth-ini-template-file
               mountPath: /template

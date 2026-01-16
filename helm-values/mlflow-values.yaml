@@ -1,7 +1,7 @@
 auth:
   enabled: true
-  adminUsername: "placeholder"
-  adminPassword: "placeholder"
+  adminUsername: "placeholder-2"
+  adminPassword: "placeholder-2"
   postgres:
     enabled: true
     host: "postgres-postgresql.data-storage.svc.cluster.local"
