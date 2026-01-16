@@ -8,14 +8,14 @@ backendStore:
     port: 5432
     database: "ds_db"
     user: "mlops"
-    password: ""
+    password: "placeholder"
 
 artifactRoot:
   s3:
     enabled: true
     bucket: "hello-world-bucket"       # existing bucket in MinIO
     awsAccessKeyId: "minioadmin"
-    awsSecretAccessKey: ""
+    awsSecretAccessKey: "placeholder"
 
 
 extraEnvVars:
