@@ -19,7 +19,7 @@ artifactRoot:
     existingSecret:
       name: "minio"
       keyOfAccessKeyId: "root-user"
-      keyOfSecretAccessKeyId: "root-password"
+      keyOfSecretAccessKey: "root-password"
 
 extraEnvVars:
   MLFLOW_S3_ENDPOINT_URL: "http://minio.data-storage.svc.cluster.local:9000"
