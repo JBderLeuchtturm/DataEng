@@ -36,6 +36,11 @@ ingress:
   className: nginx
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    kubernetes.io/backend-protocol: "HTTP"
+    kubernetes.io/use-forwarded-headers: "true"
+    kubernetes.io/proxy-read-timeout: "3600"
+    kubernetes.io/proxy-send-timeout: "3600"
+    kubernetes.io/ssl-redirect: "true"
   hosts:
     - host: "mlflow.timebertt.dski23a.timebertt.dev"
       paths:
