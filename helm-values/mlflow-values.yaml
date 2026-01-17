@@ -38,6 +38,9 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt
   hosts:
     - host: "mlflow.timebertt.dski23a.timebertt.dev"
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
   tls:
     - secretName: mlflow-tls
       hosts:
