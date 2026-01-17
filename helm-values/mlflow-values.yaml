@@ -31,20 +31,18 @@ service:
   type: ClusterIP
   port: 5000
 
-# ingress:
-#   enabled: true
-#   annotations:
-#     kubernetes.io/ingress.class: "nginx"
-#     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-#   hosts:
-#     - host: "mlflow.yourdomain.com"
-#       paths:
-#         - path: /
-#           pathType: ImplementationSpecific
-#   tls:
-#     - hosts:
-#         - "mlflow.yourdomain.com"
-#       secretName: mlflow‑tls
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  hosts:
+    - host: "mlflow.timebertt.dski23a.timebertt.dev"
+  tls:
+    - secretName: mlflow-tls
+      hosts:
+        - "mlflow.timebertt.dski23a.timebertt.dev"
+      
 
 resources:
   limits:
