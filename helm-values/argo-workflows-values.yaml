@@ -26,11 +26,24 @@ server:
     type: ClusterIP
     port: 2746
 
-  # extraEnv:
-  #   - name: ARGO_SERVER_AUTH_MODE
-  #     value: "client"
+  ingress:
+    # -- Enable an ingress resource
+    enabled: true
+    # -- Additional ingress annotations
+    annotations: 
+      cert-manager.io/cluster-issuer: letsencrypt
 
-  # authMode: client
+    # -- Defines which ingress controller will implement the resource
+    ingressClassName: "nginx"
+
+    hosts:
+      - argoworkflows.timebertt.dski23a.timebertt.dev
+
+    tls: 
+      - secretName: argoworkflows-tls
+        hosts:
+          - argoworkflows.timebertt.dski23a.timebertt.dev
+        
 
 # -----------------------------
 # Artifact Repository (MinIO)
