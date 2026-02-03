@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: ml-pipeline-template
+  namespace: argo-workflows
+spec:
+  entrypoint: main
+  serviceAccountName: argo-workflow
+  arguments:
+    parameters:
+      - name: bucket-name
+        value: input-data
+      - name: filename
+        value: example.csv
+  templates:
+    - name: main
+      container:
+        image: alpine:3.20
+        command: [sh, -lc]
+        args:
+          - |
+            echo "bucket={{workflow.parameters.bucket-name}}"
+            echo "filename={{workflow.parameters.filename}}"
