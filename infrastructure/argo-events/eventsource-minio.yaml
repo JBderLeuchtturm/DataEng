@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: minio
+  namespace: argo-events
+  annotations:
+    argocd.argoproj.io/sync-wave: "6"
+spec:
+  minio:
+    input-data:
+      endpoint: minio.data-storage.svc.cluster.local:9000
+      bucket:
+        name: input-data
+      events:
+        - s3:ObjectCreated:Put
+        - s3:ObjectCreated:CompleteMultipartUpload
+      insecure: true
+      accessKey:
+        name: minio
+        key: root-user
+      secretKey:
+        name: minio
+        key: root-password
