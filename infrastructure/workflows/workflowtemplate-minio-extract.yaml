@@ -8,7 +8,7 @@ spec:
   serviceAccountName: argo-workflow
   arguments:
     parameters:
-      - name: event-data-b64
+      - name: event-envelope-json
         value: ""
   templates:
     - name: main
@@ -17,8 +17,8 @@ spec:
             template: extract
             arguments:
               parameters:
-                - name: event-data-b64
-                  value: "{{workflow.parameters.event-data-b64}}"
+                - name: event-envelope-json
+                  value: "{{workflow.parameters.event-envelope-json}}"
         - - name: echo
             template: echo
             arguments:
@@ -31,7 +31,7 @@ spec:
     - name: extract
       inputs:
         parameters:
-          - name: event-data-b64
+          - name: event-envelope-json
       outputs:
         parameters:
           - name: bucket
@@ -45,11 +45,25 @@ spec:
         command: [sh, -lc]
         args:
           - |
-            set -e
+            set -euo pipefail
             apk add --no-cache jq >/dev/null
-            echo "{{inputs.parameters.event-data-b64}}" | base64 -d > /tmp/event.json
-            cat /tmp/event.json | jq -r '.notification[0].s3.bucket.name' > /tmp/bucket.txt
-            cat /tmp/event.json | jq -r '.notification[0].s3.object.key' > /tmp/key.txt
+
+            # 1) Envelope JSON exakt schreiben (ohne echo-quotes Probleme)
+            printf '%s' '{{inputs.parameters.event-envelope-json}}' > /tmp/envelope.json
+
+            # 2) Envelope validieren
+            jq -e . >/dev/null < /tmp/envelope.json
+
+            # 3) Base64 payload aus .data ziehen und decoden
+            jq -r '.data' /tmp/envelope.json > /tmp/payload.b64
+            base64 -d /tmp/payload.b64 > /tmp/event.json
+
+            # 4) Event JSON validieren
+            jq -e . >/dev/null < /tmp/event.json
+
+            # 5) bucket/key extrahieren
+            jq -r '.notification[0].s3.bucket.name' /tmp/event.json > /tmp/bucket.txt
+            jq -r '.notification[0].s3.object.key' /tmp/event.json > /tmp/key.txt
 
     - name: echo
       inputs:
