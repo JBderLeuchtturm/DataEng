@@ -14,7 +14,7 @@ spec:
       eventName: input-data
   triggers:
   - template:
-      name: submit-debug-dump
+      name: submit-extract-and-echo
       argoWorkflow:
         group: argoproj.io
         version: v1alpha1
@@ -25,17 +25,17 @@ spec:
             apiVersion: argoproj.io/v1alpha1
             kind: Workflow
             metadata:
-              generateName: minio-dump-
+              generateName: minio-extract-
               namespace: argo-workflows
             spec:
               arguments:
                 parameters:
-                  - name: raw-body
+                  - name: event-data-b64
                     value: "REPLACED_BY_SENSOR"
               workflowTemplateRef:
-                name: minio-event-dump
+                name: minio-extract-and-echo
         parameters:
           - src:
               dependencyName: minio-input-data
-              dataKey: ""
+              dataKey: data
             dest: spec.arguments.parameters.0.value

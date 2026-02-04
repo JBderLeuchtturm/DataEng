@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: minio-extract-and-echo
+  namespace: argo-workflows
+spec:
+  entrypoint: main
+  serviceAccountName: argo-workflow
+  arguments:
+    parameters:
+      - name: event-data-b64
+        value: ""
+  templates:
+    - name: main
+      steps:
+        - - name: extract
+            template: extract
+            arguments:
+              parameters:
+                - name: event-data-b64
+                  value: "{{workflow.parameters.event-data-b64}}"
+        - - name: echo
+            template: echo
+            arguments:
+              parameters:
+                - name: bucket
+                  value: "{{steps.extract.outputs.parameters.bucket}}"
+                - name: key
+                  value: "{{steps.extract.outputs.parameters.key}}"
+
+    - name: extract
+      inputs:
+        parameters:
+          - name: event-data-b64
+      outputs:
+        parameters:
+          - name: bucket
+            valueFrom:
+              path: /tmp/bucket.txt
+          - name: key
+            valueFrom:
+              path: /tmp/key.txt
+      container:
+        image: alpine:3.20
+        command: [sh, -lc]
+        args:
+          - |
+            set -e
+            apk add --no-cache jq >/dev/null
+            echo "{{inputs.parameters.event-data-b64}}" | base64 -d > /tmp/event.json
+            cat /tmp/event.json | jq -r '.notification[0].s3.bucket.name' > /tmp/bucket.txt
+            cat /tmp/event.json | jq -r '.notification[0].s3.object.key' > /tmp/key.txt
+
+    - name: echo
+      inputs:
+        parameters:
+          - name: bucket
+          - name: key
+      container:
+        image: alpine:3.20
+        command: [sh, -lc]
+        args:
+          - |
+            echo "bucket={{inputs.parameters.bucket}}"
+            echo "key={{inputs.parameters.key}}"
