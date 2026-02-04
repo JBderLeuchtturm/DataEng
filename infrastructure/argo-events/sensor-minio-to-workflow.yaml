@@ -13,35 +13,29 @@ spec:
       eventSourceName: minio
       eventName: input-data
   triggers:
-    - template:
-        name: submit-ml-workflow
-        argoWorkflow:
-          group: argoproj.io
-          version: v1alpha1
-          resource: workflows
-          operation: submit
-          source:
-            resource:
-              apiVersion: argoproj.io/v1alpha1
-              kind: Workflow
-              metadata:
-                generateName: ml-retrain-
-                namespace: argo-workflows
-              spec:
-                workflowTemplateRef:
-                  name: ml-pipeline-template
-                arguments:
-                  parameters:
-                    - name: bucket-name
-                      value: "input-data"
-                    - name: filename
-                      value: "REPLACED_BY_SENSOR"
-          parameters:
-            - src:
-                dependencyName: minio-input-data
-                dataKey: body.Records.0.s3.bucket.name
-              dest: spec.arguments.parameters.0.value
-            - src:
-                dependencyName: minio-input-data
-                dataKey: body.Records.0.s3.object.key
-              dest: spec.arguments.parameters.1.value
+  - template:
+      name: submit-debug-dump
+      argoWorkflow:
+        group: argoproj.io
+        version: v1alpha1
+        resource: workflows
+        operation: submit
+        source:
+          resource:
+            apiVersion: argoproj.io/v1alpha1
+            kind: Workflow
+            metadata:
+              generateName: minio-dump-
+              namespace: argo-workflows
+            spec:
+              arguments:
+                parameters:
+                  - name: raw-body
+                    value: "REPLACED_BY_SENSOR"
+              workflowTemplateRef:
+                name: minio-event-dump
+        parameters:
+          - src:
+              dependencyName: minio-input-data
+              dataKey: body
+            dest: spec.arguments.parameters.0.value
