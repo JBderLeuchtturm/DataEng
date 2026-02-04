@@ -37,5 +37,5 @@ spec:
         parameters:
           - src:
               dependencyName: minio-input-data
-              dataKey: body
+              dataKey: ""
             dest: spec.arguments.parameters.0.value
