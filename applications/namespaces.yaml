@@ -7,7 +7,7 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/mdotloading/wdski23a-mlops-gitops.git
+    repoURL: https://github.com/JBderLeuchtturm/DataEng.git
     targetRevision: main
     path: namespaces
 
