@@ -46,6 +46,8 @@ spec:
         args:
           - |
             set -euxo pipefail
+            : > /tmp/bucket.txt
+            : > /tmp/key.txt
             apk add --no-cache jq >/dev/null
 
             echo "[1] writing envelope"
